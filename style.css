@@ -1,0 +1,18 @@
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:#f7f1e8;color:#2b2420;font-size:19px;line-height:1.5;padding-bottom:84px}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:linear-gradient(135deg,#7a2e1d,#b5532f);color:#fff;box-shadow:0 2px 8px #0003}
+h1{margin:0;font-size:22px;font-family:Georgia,serif}#lang{background:#fff3;color:#fff;border:1px solid #fff8;border-radius:20px;padding:6px 14px;font-size:17px;font-weight:700}
+main{padding:14px;max-width:640px;margin:auto}
+.card{background:#fff;border-radius:18px;overflow:hidden;margin-bottom:16px;box-shadow:0 3px 12px #0001;cursor:pointer}
+.card img,.ph{width:100%;height:190px;object-fit:cover;display:block}.ph{background:linear-gradient(135deg,#c98a4b,#7a2e1d);display:flex;align-items:center;justify-content:center;font-size:64px}
+.card .b{padding:12px 16px}.card h2{margin:0;font-size:21px}.sub{color:#7a6a5e;font-size:16px}
+.hotel{border:3px solid #b5532f}.btn{display:block;width:100%;text-align:center;padding:14px;margin-top:10px;border-radius:14px;border:0;font-size:19px;font-weight:700;text-decoration:none;background:#1a73e8;color:#fff}
+.btn.alt{background:#efe4d6;color:#5a3a26}.code{font-family:monospace;font-size:21px;background:#f2e6d6;padding:2px 8px;border-radius:6px;direction:ltr;display:inline-block}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#fff;border-top:1px solid #ddd;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;border:0;background:none;padding:14px 4px;font-size:16px;color:#7a6a5e}nav button.on{color:#b5532f;font-weight:800;border-top:3px solid #b5532f}
+#modal{position:fixed;inset:0;background:#0008;z-index:10;overflow:auto}.sheet{background:#fff;min-height:100%;max-width:640px;margin:auto}
+.sheet img{width:100%;max-height:300px;object-fit:cover;display:block}.sheet .in{padding:16px 18px 40px}.sheet h2{font-family:Georgia,serif;margin:0 0 8px}
+.sheet h3{color:#b5532f;margin:18px 0 6px}.sheet li{margin-bottom:8px}.x{position:sticky;top:0;width:100%;border:0;background:#7a2e1d;color:#fff;font-size:18px;padding:12px}
+.taxi{white-space:pre-line;direction:ltr;text-align:center;font-size:40px;font-weight:800;line-height:1.3;padding:30px 10px}
+.day{background:#fff;border-radius:16px;padding:12px 16px;margin-bottom:14px}.day h2{margin:0 0 6px;font-size:20px;color:#7a2e1d}.day li{margin-bottom:6px}
+.dist{float:inline-end;font-weight:800;color:#1a73e8}.box{background:#fff;border-radius:16px;padding:6px 16px 12px;margin-bottom:14px}
+.ph-it{font-weight:800;direction:ltr}.small{font-size:14px;color:#7a6a5e}a{color:#1a73e8}
