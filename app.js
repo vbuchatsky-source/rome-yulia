@@ -10,7 +10,7 @@ function hotelCard(t){return `<div class="card hotel"><div class="ph">🏨</div>
 function placeCard(p,extra=""){const d=p[L];return `<div class="card" onclick="openP('${p.id}')"><img src="img/${p.id}.jpg" alt="" loading="lazy"><div class="b">${extra}<h2>${d.n}</h2></div></div>`}
 function render(){const t=T[L];document.documentElement.dir=t.dir;document.documentElement.lang=L;$("#title").textContent=t.title;$("#lang").textContent=t.lang;
 $("#tabs").innerHTML=t.tabs.map((n,i)=>`<button class="${i==tab?'on':''}" onclick="tab=${i};render();scrollTo(0,0)">${["🏛️","📍","🗓️","📄","🛂"][i]}<br>${n}</button>`).join("");
-let h="";if(tab==0){h=hotelCard(t)+P.map(p=>placeCard(p)).join("")+`<p class="small"><a href="#" onclick="credits();return false">${t.credits}</a></p>`}
+let h="";if(tab==0){h=wxMini()+hotelCard(t)+P.map(p=>placeCard(p)).join("")+`<p class="small"><a href="#" onclick="credits();return false">${t.credits}</a></p>`}
 else if(tab==1){h=`<button class="btn" onclick="locate()">📍 ${t.near}</button><p class="small">${t.nearNote}</p><div id="near"></div>`}
 else if(tab==2){h=t.days.map(([d,it])=>`<div class="day"><h2>${d}</h2><ul>${it.map(x=>`<li>${x}</li>`).join("")}</ul></div>`).join("")}
 else if(tab==4){h=ppView()}
