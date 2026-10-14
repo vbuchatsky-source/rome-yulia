@@ -9,12 +9,13 @@ function hotelCard(t){return `<div class="card hotel"><div class="ph">🏨</div>
 <a class="btn alt" href="tel:+39064881663">📞 ${t.call} <bdi dir="ltr">${HOTEL.phone}</bdi></a></div></div>`}
 function placeCard(p,extra=""){const d=p[L];return `<div class="card" onclick="openP('${p.id}')"><img src="img/${p.id}.jpg" alt="" loading="lazy"><div class="b">${extra}<h2>${d.n}</h2></div></div>`}
 function render(){const t=T[L];document.documentElement.dir=t.dir;document.documentElement.lang=L;$("#title").textContent=t.title;$("#lang").textContent=t.lang;
-$("#tabs").innerHTML=t.tabs.map((n,i)=>`<button class="${i==tab?'on':''}" onclick="tab=${i};render();scrollTo(0,0)">${["🏛️","📍","🗓️","📄"][i]}<br>${n}</button>`).join("");
+$("#tabs").innerHTML=t.tabs.map((n,i)=>`<button class="${i==tab?'on':''}" onclick="tab=${i};render();scrollTo(0,0)">${["🏛️","📍","🗓️","📄","🛂"][i]}<br>${n}</button>`).join("");
 let h="";if(tab==0){h=hotelCard(t)+P.map(p=>placeCard(p)).join("")+`<p class="small"><a href="#" onclick="credits();return false">${t.credits}</a></p>`}
 else if(tab==1){h=`<button class="btn" onclick="locate()">📍 ${t.near}</button><p class="small">${t.nearNote}</p><div id="near"></div>`}
 else if(tab==2){h=t.days.map(([d,it])=>`<div class="day"><h2>${d}</h2><ul>${it.map(x=>`<li>${x}</li>`).join("")}</ul></div>`).join("")}
+else if(tab==4){h=ppView()}
 else{h=`<div class="box">${DOCS[L]}</div><div class="box"><h3>🗣️ ${t.phrases}</h3>${PHR.map(r=>`<p><span class="ph-it">${r[0]}</span><br>${L=="he"?r[1]:r[2]}<br><span class="small">${L=="he"?r[3]:r[4]}</span></p>`).join("")}</div>`}
-$("#main").innerHTML=h;if(tab==1&&pos)showNear()}
+$("#main").innerHTML=h;if(tab==1&&pos)showNear();if(tab==4)ppLoad()}
 function sheet(html){$("#sheet").innerHTML=`<button class="x" onclick="closeM()">✕ ${T[L].close}</button>`+html;$("#modal").hidden=false;$("#modal").scrollTop=0;history.pushState({m:1},"")}
 function closeM(){if(!$("#modal").hidden){$("#modal").hidden=true}}onpopstate=()=>{$("#modal").hidden=true};
 function openP(id){const p=P.find(x=>x.id==id),d=p[L],t=T[L];sheet(`<img src="img/${p.id}.jpg" alt=""><div class="in"><h2>${d.n}</h2>
@@ -29,3 +30,19 @@ $("#near").innerHTML=list.map(({p,k})=>{const w=Math.round(k*1.3/4*60),tag=`<spa
 return p.id=="hotel"?`<div class="card hotel"><div class="b">${tag}<h2>🏨 Domus Real Cardello</h2><a class="btn" href="${dirUrl(HOTEL.lat,HOTEL.lng)}" target="_blank">${t.navHotel}</a></div></div>`:placeCard(p,tag)}).join("")}
 $("#lang").onclick=()=>{L=L=="he"?"ru":"he";localStorage.lang=L;render()};render();
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js");
+
+let ppUrls=null;
+function idb(){return new Promise((r,j)=>{const q=indexedDB.open("roma",1);q.onupgradeneeded=()=>q.result.createObjectStore("kv");q.onsuccess=()=>r(q.result);q.onerror=j})}
+async function kv(k,v){const d=await idb();return new Promise(r=>{const t=d.transaction("kv",v===undefined?"readonly":"readwrite").objectStore("kv");const q=v===undefined?t.get(k):v===null?t.delete(k):t.put(v,k);q.onsuccess=()=>r(q.result)})}
+function ppView(){const t=T[L].pp;return `<div class="box"><h3>${t.h}</h3><div id="pp"><input id="pw" type="password" inputmode="numeric" autocomplete="off" placeholder="${t.pw}" style="width:100%;font-size:22px;padding:12px;border-radius:12px;border:1px solid #ccc" onkeydown="if(event.key=='Enter')ppOpen()">
+<label style="display:block;margin-top:10px"><input type="checkbox" id="rem" checked> ${t.rem}</label><button class="btn" onclick="ppOpen()">${t.open}</button><p id="pperr" style="color:#c00;font-weight:700"></p></div></div>`}
+function ppShow(blobs){const t=T[L].pp;ppUrls=ppUrls||blobs.map(b=>URL.createObjectURL(b));$("#pp").innerHTML=`<p class="small">${t.tap}</p>`+ppUrls.map(u=>`<img src="${u}" style="width:100%;border-radius:10px;margin-bottom:12px" onclick="ppFull('${u}')">`).join("")+`<button class="btn alt" onclick="ppForget()">${t.forget}</button>`}
+function ppFull(u){sheet(`<div style="overflow:auto;touch-action:pinch-zoom"><img src="${u}" style="width:100%;max-height:none"></div>`)}
+async function ppLoad(){if(ppUrls)return ppShow();try{const b=await kv("pp");if(b)ppShow(b)}catch(e){}}
+async function ppForget(){await kv("pp",null);ppUrls=null;render()}
+async function ppOpen(){const t=T[L].pp,e=$("#pperr");e.style.color="#555";e.textContent=t.wait;await new Promise(r=>setTimeout(r,30));
+try{const m=await (await fetch("sec/meta.json")).json(),s=Uint8Array.from(atob(m.salt),c=>c.charCodeAt(0));
+const base=await crypto.subtle.importKey("raw",new TextEncoder().encode($("#pw").value),"PBKDF2",false,["deriveKey"]);
+const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:s,iterations:m.iter,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["decrypt"]);
+const blobs=[];for(const n of ["p1","p2"]){const d=new Uint8Array(await (await fetch(`sec/${n}.bin`)).arrayBuffer());blobs.push(new Blob([await crypto.subtle.decrypt({name:"AES-GCM",iv:d.slice(0,12)},key,d.slice(12))],{type:"image/jpeg"}))}
+if($("#rem").checked)await kv("pp",blobs);ppShow(blobs)}catch(x){e.style.color="#c00";e.textContent=t.bad}}
