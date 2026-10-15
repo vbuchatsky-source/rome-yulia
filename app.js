@@ -29,7 +29,9 @@ function showNear(){const t=T[L],list=[...P,{id:"hotel",lat:HOTEL.lat,lng:HOTEL.
 $("#near").innerHTML=list.map(({p,k})=>{const w=Math.round(k*1.3/4*60),tag=`<span class="dist">${k.toFixed(1)} ${t.km} · ~${w} ${t.min}</span>`;
 return p.id=="hotel"?`<div class="card hotel"><div class="b">${tag}<h2>🏨 Domus Real Cardello</h2><a class="btn" href="${dirUrl(HOTEL.lat,HOTEL.lng)}" target="_blank">${t.navHotel}</a></div></div>`:placeCard(p,tag)}).join("")}
 $("#lang").onclick=()=>{L=L=="he"?"ru":"he";localStorage.lang=L;render()};render();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js");
+if("serviceWorker" in navigator){let rl=false;const hadCtrl=!!navigator.serviceWorker.controller;
+navigator.serviceWorker.addEventListener("controllerchange",()=>{if(hadCtrl&&!rl){rl=true;location.reload()}});
+navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(reg=>{reg.update();document.addEventListener("visibilitychange",()=>{if(!document.hidden)reg.update()})}).catch(()=>{})}
 
 let ppUrls=null;
 function idb(){return new Promise((r,j)=>{const q=indexedDB.open("roma",1);q.onupgradeneeded=()=>q.result.createObjectStore("kv");q.onsuccess=()=>r(q.result);q.onerror=j})}
