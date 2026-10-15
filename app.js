@@ -16,7 +16,7 @@ else if(tab==2){h=t.days.map(([d,it])=>`<div class="day"><h2>${d}</h2><ul>${it.m
 else if(tab==4){h=ppView()}
 else{h=`<div class="box">${DOCS[L]}</div><div class="box"><h3>🗣️ ${t.phrases}</h3>${PHR.map(r=>`<p><span class="ph-it">${r[0]}</span><br>${L=="he"?r[1]:r[2]}<br><span class="small">${L=="he"?r[3]:r[4]}</span></p>`).join("")}</div>`}
 $("#main").innerHTML=h;if(tab==1&&pos)showNear();if(tab==4)ppLoad()}
-function sheet(html){$("#sheet").innerHTML=`<button class="x" onclick="closeM()">✕ ${T[L].close}</button>`+html;$("#modal").hidden=false;$("#modal").scrollTop=0;history.pushState({m:1},"")}
+function sheet(html,rep){const open=!$("#modal").hidden;$("#sheet").innerHTML=`<button class="x" onclick="history.back()">✕ ${T[L].close}</button>`+html;$("#modal").hidden=false;$("#modal").scrollTop=0;if(!(rep&&open))history.pushState({m:1},"")}
 function closeM(){if(!$("#modal").hidden){$("#modal").hidden=true}}onpopstate=()=>{$("#modal").hidden=true};
 function openP(id){const p=P.find(x=>x.id==id),d=p[L],t=T[L];sheet(`<img src="img/${p.id}.jpg" alt=""><div class="in"><h2>${d.n}</h2>
 <a class="btn" href="${dirUrl(p.lat,p.lng)}" target="_blank">${t.nav}</a><p class="small">${t.taxi}</p>
