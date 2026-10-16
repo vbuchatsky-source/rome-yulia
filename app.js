@@ -14,7 +14,7 @@ let h="";if(tab==0){h=wxMini()+hotelCard(t)+P.map(p=>placeCard(p)).join("")+`<p 
 else if(tab==1){h=`<button class="btn" onclick="locate()">📍 ${t.near}</button><p class="small">${t.nearNote}</p><div id="near"></div>`}
 else if(tab==2){h=t.days.map(([d,it])=>`<div class="day"><h2>${d}</h2><ul>${it.map(x=>`<li>${x}</li>`).join("")}</ul></div>`).join("")}
 else if(tab==4){h=ppView()}
-else{h=tixCard()+`<div class="box">${DOCS[L]}</div><div class="box"><h3>🗣️ ${t.phrases}</h3>${PHR.map(r=>`<p><span class="ph-it">${r[0]}</span><br>${L=="he"?r[1]:r[2]}<br><span class="small">${L=="he"?r[3]:r[4]}</span></p>`).join("")}</div>`}
+else{h=bpCard()+tixCard()+`<div class="box">${DOCS[L]}</div><div class="box"><h3>🗣️ ${t.phrases}</h3>${PHR.map(r=>`<p><span class="ph-it">${r[0]}</span><br>${L=="he"?r[1]:r[2]}<br><span class="small">${L=="he"?r[3]:r[4]}</span></p>`).join("")}</div>`}
 $("#main").innerHTML=h;if(tab==1&&pos)showNear();if(tab==4)ppLoad()}
 function sheet(html,rep){const open=!$("#modal").hidden;$("#sheet").innerHTML=`<button class="x" onclick="history.back()">✕ ${T[L].close}</button>`+html;$("#modal").hidden=false;$("#modal").scrollTop=0;if(!(rep&&open))history.pushState({m:1},"")}
 function closeM(){if(!$("#modal").hidden){$("#modal").hidden=true}}onpopstate=()=>{$("#modal").hidden=true};
