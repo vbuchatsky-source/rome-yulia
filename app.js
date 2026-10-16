@@ -60,3 +60,4 @@ ${r("🇮🇱",he?"שגרירות ישראל ברומא":"Посольство �
 ${r("🛂",he?"המחלקה הקונסולרית (דרכונים)":"Консульский отдел (паспорта)","+39 06 3619 8541","+390636198541")}
 ${r("🏨",he?"המלון – Domus Real Cardello":"Отель – Domus Real Cardello","+39 06 488 1663","+39064881663")}
 <h3>${he?"להראות לאנשים:":"Показать людям:"}</h3><div style="font-size:42px;font-weight:800;text-align:center;direction:ltr;background:#fff3f3;border-radius:14px;padding:20px">Ho bisogno di aiuto!</div><p class="small" style="text-align:center">${he?"„אני צריכה עזרה” (הו בִּיזוֹנְיוֹ די אַיוּטוֹ)":"«Мне нужна помощь» (о бизоньо ди аюто)"}</p></div>`)}
+new MutationObserver(()=>{const b=document.getElementById("sos");if(!b)return;const m=document.getElementById("modal");const ov=[...document.body.children].some(e=>e.style&&e.style.zIndex=="9999");b.style.display=(m&&!m.hidden)||ov?"none":""}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["hidden"]});
