@@ -1,2 +1,7 @@
-self.addEventListener("install",()=>self.skipWaiting());
-self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.map(x=>caches.delete(x)))).then(()=>self.registration.unregister()).then(()=>self.clients.matchAll()).then(cs=>cs.forEach(c=>c.navigate(c.url))))});
+const C="roma-v16",A=["./","index.html","style.css","data.js","ui.js","app.js","weather.js","manifest.json","attribution.json","icon-192.png","icon-512.png","sec/meta.json","sec/p1.bin","sec/p2.bin","img/borghese.jpg","img/capitoline.jpg","img/colosseum.jpg","img/forum.jpg","img/navona.jpg","img/pantheon.jpg","img/peter.jpg","img/santangelo.jpg","img/spanish.jpg","img/trastevere.jpg","img/trevi.jpg","img/vatican.jpg","index.html?v=16","style.css?v=16","data.js?v=16","ui.js?v=16","weather.js?v=16","app.js?v=16","manifest.json?v=16"];
+const NET=/(\/|index\.html|\.js|\.css|manifest\.json)$/;
+self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(C).then(c=>c.addAll(A.map(u=>new Request(u,{cache:"reload"})))))});
+self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!=C).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
+self.addEventListener("fetch",e=>{const q=e.request,u=new URL(q.url);if(q.method!="GET"||u.origin!=location.origin)return;
+if(q.mode=="navigate"||NET.test(u.pathname)){e.respondWith(fetch(q,{cache:"no-cache"}).then(n=>{if(n.ok){const c=n.clone();caches.open(C).then(x=>x.put(q,c))}return n}).catch(()=>caches.match(q).then(r=>r||caches.match(q,{ignoreSearch:true})).then(r=>r||(q.mode=="navigate"?caches.match("index.html"):undefined))));return}
+e.respondWith(caches.match(q,{ignoreSearch:true}).then(r=>r||fetch(q).then(n=>{if(n.ok){const c=n.clone();caches.open(C).then(x=>x.put(q,c))}return n})))});
